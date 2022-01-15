@@ -146,10 +146,10 @@ const Page = ({
               <WoodButton
                 width={150}
                 height={50}
-                title={"Telegram"}
+                title={"Discord"}
                 fontSize={15}
                 onClick={() => {
-                  window.open("https://t.me/FantomWolfGame_chat");
+                  window.open("http://discord.gg/gfgHhK84zD");
                 }}
               />
               <WoodButton
@@ -177,7 +177,7 @@ const Page = ({
               <WoodButton
                 width={150}
                 height={50}
-                title={"buy sheep"}
+                title={"buy 🐑"}
                 fontSize={15}
                 onClick={() => {
                   window.open(
@@ -189,6 +189,30 @@ const Page = ({
                 width={150}
                 height={50}
                 title={"add liquidity"}
+                fontSize={15}
+                onClick={() => {
+                  window.open(
+                    "https://spookyswap.finance/add/0x2E4bF93BdEd3236D0719aa3ceB43932f279EFe1F/0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83"
+                  );
+                }}
+              />
+            </div>
+            <div className="flex flex-col md:flex-row justify-center items-center gap-5 mb-2">
+            <WoodButton
+                width={150}
+                height={50}
+                title={"buy $WEED"}
+                fontSize={15}
+                onClick={() => {
+                  window.open(
+                    "https://spookyswap.finance/add/0x2E4bF93BdEd3236D0719aa3ceB43932f279EFe1F/0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83"
+                  );
+                }}
+              />
+              <WoodButton
+                width={150}
+                height={50}
+                title={"buy $MILK"}
                 fontSize={15}
                 onClick={() => {
                   window.open(
