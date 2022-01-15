@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { WalletHook } from "./utils/ethereum";
-import { woolBalance } from "./utils/wool";
+import { woolBalance, milkBalance, weedBalance } from "./utils/wool";
 import {
   loadTotalSupply,
   loadWoolfList,
   loadStakedWoolfList,
 } from "./utils/woolf";
 import { getClaimable, claimable } from "./utils/barn";
-import { useApollo } from "./utils/apollo";
 import Page from "./Page";
 import Modal from "react-modal";
 import "./App.css";
@@ -15,6 +14,8 @@ const App = () => {
 
   const { wallet, chain } = WalletHook();
   const [wool, setWool] = useState("?");
+  const [milk, setMilk] = useState("?");
+  const [weed, setWeed] = useState("?");
   const [total, setTotal] = useState(0);
   const [woolf, setWoolf] = useState([]);
   const [stakedWoolf, setStakedWoolf] = useState([]);
@@ -27,6 +28,8 @@ const App = () => {
     const loadWool = async () => {
       if (!wallet) return;
       setWool(await woolBalance(wallet));
+      setMilk(await milkBalance(wallet));
+      setWeed(await weedBalance(wallet));
       loadWoolf();
       loadStaked();
     };
@@ -61,6 +64,8 @@ const App = () => {
       wallet={wallet}
       chain={chain}
       wool={wool}
+      milk={milk}
+      weed={weed}
       total={total}
       woolf={woolf}
       stakedWoolf={stakedWoolf}

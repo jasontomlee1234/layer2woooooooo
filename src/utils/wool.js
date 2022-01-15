@@ -19,3 +19,29 @@ export const woolBalance = async (address) => {
         return BigNumber.from('0')
     }
 }
+
+export const milkBalance = async (address) => {
+    const provider = _getProvider()
+    if (!provider) return BigNumber.from('0')
+    try {
+        const signer = provider.getSigner()
+        const contract = new Contract(process.env.REACT_APP_MILK, WOOL_ABI, signer)
+        return await contract.balanceOf(address)
+    } catch (e) {
+        console.log(e)
+        return BigNumber.from('0')
+    }
+}
+
+export const weedBalance = async (address) => {
+    const provider = _getProvider()
+    if (!provider) return BigNumber.from('0')
+    try {
+        const signer = provider.getSigner()
+        const contract = new Contract(process.env.REACT_APP_WEED, WOOL_ABI, signer)
+        return await contract.balanceOf(address)
+    } catch (e) {
+        console.log(e)
+        return BigNumber.from('0')
+    }
+}

@@ -22,7 +22,19 @@ import {
   addManyFriends,
 } from "./utils/friendSystem";
 
-const Page = ({ wallet, chain, wool, reload, total, woolf, stakedWoolf }) => {
+import { getAllowance } from "./utils/masterchef";
+
+const Page = ({
+  wallet,
+  chain,
+  wool,
+  milk,
+  weed,
+  reload,
+  total,
+  woolf,
+  stakedWoolf,
+}) => {
   const { data, loading } = {};
 
   let staked = stakedWoolf;
@@ -66,6 +78,7 @@ const Page = ({ wallet, chain, wool, reload, total, woolf, stakedWoolf }) => {
   const [showType, setShowType] = useState(0);
 
   const [transacting, setTransacting] = useState(false);
+  const [weedApproved, setWeedApproved] = useState(false);
 
   // useEffect(() => {
   //   //TODO：根据点击的showType更新showList
@@ -82,6 +95,13 @@ const Page = ({ wallet, chain, wool, reload, total, woolf, stakedWoolf }) => {
       setInvitedList(_invitedList);
 
       setShowList(_friendList);
+      const _weedApproved = await getAllowance(
+        wallet,
+        process.env.REACT_APP_WOOLF,
+        process.env.REACT_APP_WEED
+      );
+      setWeedApproved(_weedApproved > 0);
+
       // console.log(_friendList);
       // console.log(_inviteList);
       // console.log(_invitedList);
@@ -93,7 +113,7 @@ const Page = ({ wallet, chain, wool, reload, total, woolf, stakedWoolf }) => {
     <div className="w-full flex flex-col md:justify-center items-center p-5">
       <LoadingModal modalIsOpen={transacting} loadingScenes={[]} />
       <div className="title text-center justify-self-start mb-5">
-        Fantom Wolf Game / M
+        Fantom Wolf Game / F
       </div>
 
       <div
@@ -393,10 +413,13 @@ const Page = ({ wallet, chain, wool, reload, total, woolf, stakedWoolf }) => {
             wallet={wallet}
             chain={chain}
             total={total}
+            weedApproved={weedApproved}
+            total={total}
             reload={() => {
               reload();
             }}
             woolBalance={wool}
+            milkBalance={milk}
           />
         </div>
         <div className="h-full w-full md:w-1/2 flex justify-center">
@@ -404,6 +427,8 @@ const Page = ({ wallet, chain, wool, reload, total, woolf, stakedWoolf }) => {
             wallet={wallet}
             chain={chain}
             wool={wool}
+            milk={milk}
+            weed={weed}
             tokens={tokens}
             stakes={staked}
             reload={() => {
@@ -420,7 +445,7 @@ const Page = ({ wallet, chain, wool, reload, total, woolf, stakedWoolf }) => {
       >
         <div
           className="h-full w-full flex justify-between flex flex-col gap-5"
-          style={{ width: "60%" , display:"contents"}}
+          style={{ width: "60%", display: "contents" }}
         >
           <Farm wallet={wallet}></Farm>
           <WeedFarm wallet={wallet}></WeedFarm>

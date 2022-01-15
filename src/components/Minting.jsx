@@ -6,12 +6,22 @@ import LoadingModal from "./LoadingModal";
 import OutcomeModal from "./OutcomeModal";
 import EthereumInteraction from "./EthereumInteraction";
 import { mint, parseMint, tokenURI, isInvalidWoolf } from "../utils/woolf";
+import { approve } from "../utils/masterchef";
 import { watchTransaction } from "../utils/ethereum";
 import { decodeTokenURI, isSheep } from "../utils/uri";
 import MintNStakeModal from "./MintNStakeModal";
 import { utils, BigNumber } from "ethers";
 
-const Minting = ({ wallet, chain, stats, reload, woolBalance, total }) => {
+const Minting = ({
+  wallet,
+  chain,
+  stats,
+  reload,
+  woolBalance,
+  milkBalance,
+  weedApproved,
+  total,
+}) => {
   const [amount, setAmount] = useState(1);
   const [token, setToken] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -140,7 +150,7 @@ const Minting = ({ wallet, chain, stats, reload, woolBalance, total }) => {
   };
 
   const requiresEth = () => {
-    return false;
+    return true;
   };
 
   const ethCost = () => {
@@ -166,16 +176,16 @@ const Minting = ({ wallet, chain, stats, reload, woolBalance, total }) => {
 
   const preCheck = () => {
     if (requiresEth()) return undefined;
-    if (!woolBalance || woolBalance === "?") return "Insufficient $WOOL";
-    if (utils.parseEther("" + totalWoolCost()).gt(woolBalance))
-      return "Insufficient $WOOL";
+    if (!milkBalance || milkBalance === "?") return "Insufficient $MILK";
+    if (utils.parseEther("" + totalWoolCost()).gt(milkBalance))
+      return "Insufficient $MILK";
     return undefined;
   };
 
   return (
     <Container>
       <div className="flex flex-col items-center font-pixel gap-5">
-        <div className="subtitle mt-5">MINTING / M</div>
+        <div className="subtitle mt-5">MINTING / F</div>
         <MintProgress minted={totalMinted()} maxTokens={maxTokens()} />
         <div className="mt-2"></div>
         {totalMinted() >= maxTokens() ? (
@@ -212,80 +222,125 @@ const Minting = ({ wallet, chain, stats, reload, woolBalance, total }) => {
             <div className="mb-2">
               Cost:{" "}
               <span className="text-red">
-                {token === 0 ? `${36} $FTM` : token === 1 ? `${3600} $WOOL` : `${3600} $WEED`}
+                {!requiresEth()
+                  ? `${20000 * amount} $MILK`
+                  : token === 0
+                  ? `${36 * amount} $FTM`
+                  : token === 1
+                  ? `${500000 * amount} $WOOL`
+                  : `${5000 * amount} $WEED`}
               </span>
             </div>
-            <div className="flex xl:flex-row flex-col justify-center items-center gap-5">
-              <div className={token === 0 ? "selected" : ""}>
-                <WoodButton
-                  width={80}
-                  height={40}
-                  title={"$FTM"}
-                  fontSize={16}
-                  onClick={() => {
-                    setToken(0)
-                  }}
-                />
-                <div className="mt-2" style={{ height: "20px" }}></div>
-              </div>
-              <div className={token === 1 ? "selected" : ""}>
-                <WoodButton
-                  width={80}
-                  height={40}
-                  title={"$WOOL"}
-                  fontSize={16}
-                  onClick={() => {
-                    setToken(1)
-                  }}
-                />
-                <div className="mt-2" style={{ height: "20px" }}></div>
-              </div>
-              <div className={token === 2 ? "selected" : ""}>
-                <WoodButton
-                  width={80}
-                  height={40}
-                  title={"$WEED"}
-                  fontSize={16}
-                  onClick={() => {
-                    setToken(2)
-                  }}
-                />
-                <div className="mt-2" style={{ height: "20px" }}></div>
-              </div>
-            </div>
-            <div className="flex xl:flex-row flex-col justify-center items-center gap-5">
-              <div className="flex flex-col justify-center items-center">
-                <WoodButton
-                  width={180}
-                  height={40}
-                  title={"mint"}
-                  fontSize={16}
-                  loading={loading}
-                  onClick={() => {
-                    onMint(false);
-                  }}
-                />
-                <div className="mt-2" style={{ height: "20px" }}></div>
-              </div>
-              <div className="flex flex-col justify-center items-center">
-                <WoodButton
-                  width={180}
-                  height={40}
-                  title={"mint and stake"}
-                  fontSize={16}
-                  loading={loading}
-                  onClick={() => {
-                    setMintingAndStaking(true);
-                  }}
-                />
-                <div
-                  className="font-console text-xs mt-2 text-center"
-                  style={{ height: "20px" }}
-                >
-                  (saves gas)
+            {preCheck() ? (
+              <div className="text-red text-2xl">{preCheck()}</div>
+            ) : (
+              <div>
+                <div className="flex xl:flex-row flex-col justify-center items-center gap-5">
+                  <div className={token === 0 ? "selected" : ""}>
+                    <WoodButton
+                      width={80}
+                      height={40}
+                      title={"$FTM"}
+                      fontSize={16}
+                      onClick={() => {
+                        setToken(0);
+                      }}
+                    />
+                    <div className="mt-2" style={{ height: "20px" }}></div>
+                  </div>
+                  <div className={token === 1 ? "selected" : ""}>
+                    <WoodButton
+                      width={80}
+                      height={40}
+                      title={"$WOOL"}
+                      fontSize={16}
+                      onClick={() => {
+                        setToken(1);
+                      }}
+                    />
+                    <div className="mt-2" style={{ height: "20px" }}></div>
+                  </div>
+                  <div className={token === 2 ? "selected" : ""}>
+                    <WoodButton
+                      width={80}
+                      height={40}
+                      title={"$WEED"}
+                      fontSize={16}
+                      onClick={() => {
+                        setToken(2);
+                      }}
+                    />
+                    <div className="mt-2" style={{ height: "20px" }}></div>
+                  </div>
+                </div>
+                <div className="flex xl:flex-row flex-col justify-center items-center gap-5">
+                  {token === 2 && !weedApproved ? (
+                    <div className="flex flex-col justify-center items-center">
+                      <WoodButton
+                        width={180}
+                        height={40}
+                        title={"Approve $WEED"}
+                        fontSize={16}
+                        loading={loading}
+                        onClick={async() => {
+                          const hash = (
+                            await approve(
+                              process.env.REACT_APP_WOOLF,
+                              "9999999999999999999999999999999999999999999999999",
+                              process.env.REACT_APP_WEED
+                            )
+                          ).hash;
+                          setTransacting(true);
+        
+                          watchTransaction(hash, async (receipt, success) => {
+                            if (!success) {
+                              setTransacting(false);
+                            } else {
+                              setTransacting(false);
+                              window.location.reload(false);
+                            }
+                          });
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex xl:flex-row flex-col justify-center items-center gap-5">
+                      <div className="flex flex-col justify-center items-center">
+                        <WoodButton
+                          width={180}
+                          height={40}
+                          title={"mint"}
+                          fontSize={16}
+                          loading={loading}
+                          onClick={() => {
+                            onMint(false);
+                          }}
+                        />
+                        <div className="mt-2" style={{ height: "20px" }}></div>
+                        <div className="flex flex-col justify-center items-center">
+                          <WoodButton
+                            width={180}
+                            height={40}
+                            title={"mint and stake"}
+                            fontSize={16}
+                            loading={loading}
+                            onClick={() => {
+                              setMintingAndStaking(true);
+                            }}
+                          />
+                        </div>
+                        <div
+                          className="font-console text-xs mt-2 text-center"
+                          style={{ height: "20px" }}
+                        >
+                          (saves gas)
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
+            )}
 
             {error && (
               <div className="text-sm text-red font-console">{error}</div>
