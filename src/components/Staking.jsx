@@ -35,8 +35,21 @@ const Staking = ({
   const [error, setError] = useState(null);
   const [transacting, setTransacting] = useState(false);
 
+  const [approved, setApproved] = useState(false);
+
+
   useEffect(() => {
     if (selected.length === 0) setOperation(null);
+    async function fetchData(){
+      const rst = await isApproved(wallet)
+      console.log(rst)
+      if(rst){
+        setApproved(true)
+      }
+    }
+    if(wallet){
+      fetchData()
+    }
   }, [selected]);
 
   const onStake = async () => {
@@ -372,7 +385,7 @@ const Staking = ({
                     width={150}
                     height={80}
                     fontSize="16px"
-                    title={"STAKE"}
+                    title={approved?"STAKE":"Approve"}
                     loading={loading}
                     onClick={() => {
                       const isStakingSheep = !!selected.find(
@@ -393,7 +406,12 @@ const Staking = ({
                           source: "./images/staking-pack.gif",
                         });
                       setLoadingScenes(scenes);
-                      onStake(selected);
+                      if(approved){
+
+                        onStake(selected);
+                      }else{
+                        onApprove()
+                      }
                     }}
                   />
                 )}
