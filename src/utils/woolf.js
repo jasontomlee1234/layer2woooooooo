@@ -11,13 +11,13 @@ export const mint = async (stake, tokens, tokenType) => {
   const contract = new Contract(process.env.REACT_APP_WOOLF, WOOLF_ABI, signer);
   const gasEstimate = await contract.estimateGas.mint(tokens, stake, tokenType,{
     value: tokenType === 0
-      ? utils.parseUnits("0.1", "ether").mul(BigNumber.from(tokens))
+      ? utils.parseUnits("36", "ether").mul(BigNumber.from(tokens))
       : BigNumber.from(0),
   });
   return await contract.mint(tokens, stake, tokenType,{
     gasLimit: gasEstimate.mul(BigNumber.from(12)).div(BigNumber.from(10)),
     value: tokenType === 0
-      ? utils.parseUnits("0.1", "ether").mul(BigNumber.from(tokens))
+      ? utils.parseUnits("36", "ether").mul(BigNumber.from(tokens))
       : BigNumber.from(0),
   });
 };

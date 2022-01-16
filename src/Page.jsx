@@ -123,13 +123,13 @@ const Page = ({
         <Container transparent={false}>
           <div className="flex flex-col jsutify-center items-center">
             Sheep and Wolves competing for $WOOL on a farm in the metaverse.
-            Nothing but blockchain. No roadmap. Fully in the Public Domain.
+            Nothing but blockchain. Fully in the Public Domain.
             <br />
             <br />
             <div style={{ fontSize: "12px" }}>
-              <div style={{ fontSize: "20px" }}>⚠️⚠️⚠️️️</div>
+              {/* <div style={{ fontSize: "20px" }}>⚠️⚠️⚠️️️</div>
               Please kindly wait 2-3 minutes until the staking list loads
-              properly after each reload.
+              properly after each reload. */}
               <br />
             </div>
             <br />
@@ -177,11 +177,11 @@ const Page = ({
               <WoodButton
                 width={150}
                 height={50}
-                title={"buy 🐑"}
+                title={"buy ♀🐑"}
                 fontSize={15}
                 onClick={() => {
                   window.open(
-                    "https://paintswap.finance/marketplace/collections/0xd04f2119b174c14210e74e0ebb4a63a1b36ad409"
+                    "/"
                   );
                 }}
               />
