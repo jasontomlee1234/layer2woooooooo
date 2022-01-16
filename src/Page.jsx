@@ -205,7 +205,7 @@ const Page = ({
                 fontSize={15}
                 onClick={() => {
                   window.open(
-                    "https://spookyswap.finance/add/0x2E4bF93BdEd3236D0719aa3ceB43932f279EFe1F/0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83"
+                    "https://spookyswap.finance/swap?outputCurrency=0x6F0F0610Bb9441d53EADB52067b3Fd45c2c75963"
                   );
                 }}
               />
@@ -216,7 +216,7 @@ const Page = ({
                 fontSize={15}
                 onClick={() => {
                   window.open(
-                    "https://spookyswap.finance/add/0x2E4bF93BdEd3236D0719aa3ceB43932f279EFe1F/0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83"
+                    "https://spookyswap.finance/swap?outputCurrency=0x90ad9988e7050Db30829164b8E9837A351654863"
                   );
                 }}
               />
