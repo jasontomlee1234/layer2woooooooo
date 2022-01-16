@@ -273,7 +273,7 @@ const Staking = ({
                     width={150}
                     height={80}
                     fontSize="14px"
-                    title={"COLLET ALL $MILK"}
+                    title={"COLLECT ALL $MILK"}
                     loading={loading}
                     onClick={() => {
                       const isClaimingSheep = !!selected.find(
