@@ -18,7 +18,7 @@ const Staking = ({
   wallet,
   chain,
   reload,
-  wool,
+  MILK,
   weed,
   milk,
 }) => {
@@ -163,7 +163,7 @@ const Staking = ({
         if (claims[i].unstaked) {
           if (claims[i].earned.eq(BigNumber.from(0))) {
             o.push({
-              message: `Sheep #${token.number} left the barn, but all its $WOOL was stolen by wolves!`,
+              message: `Sheep #${token.number} left the barn, but all its $MILK was stolen by wolves!`,
               source: "./images/unstaked-notsafe.gif",
             });
           } else {
@@ -172,7 +172,7 @@ const Staking = ({
                 token.number
               } left the barn and evaded the Wolves, earning ${parseBigNumber(
                 claims[i].earned
-              )} $WOOL`,
+              )} $MILK`,
               source: "./images/unstaked-safe.gif",
             });
           }
@@ -180,7 +180,7 @@ const Staking = ({
           o.push({
             message: `Sheep #${token.number} was sheared for ${parseBigNumber(
               claims[i].earned
-            )} $WOOL, after paying a 20% tax to the Wolves.`,
+            )} $MILK, after paying a 20% tax to the Wolves.`,
             source: "./images/sheared.gif",
           });
         }
@@ -191,14 +191,14 @@ const Staking = ({
               token.number
             } left the pack, and received ${parseBigNumber(
               claims[i].earned
-            )} $WOOL!`,
+            )} $MILK!`,
             source: "./images/unstaked-pack.gif",
           });
         } else {
           o.push({
             message: `Wolf #${token.number} collected a tax of ${parseBigNumber(
               claims[i].earned
-            )} $WOOL!`,
+            )} $MILK!`,
             source: "./images/claimed-pack.gif",
           });
         }
@@ -215,8 +215,8 @@ const Staking = ({
           <div>{parseBigNumber(milk)} $Milk</div>
         </div>
         <div className="flex justify-between items-center font-console gap-2">
-          <div>$WOOL in your wallet:</div>
-          <div>{parseBigNumber(wool)} $WOOL</div>
+          <div>$MILK in your wallet:</div>
+          <div>{parseBigNumber(MILK)} $MILK</div>
         </div>
         <div className="flex justify-between items-center font-console gap-2">
           <div>$WEED in your wallet:</div>
